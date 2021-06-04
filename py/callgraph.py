@@ -15,7 +15,8 @@ import pickle
 import copy
 from util import get_tu, get_cursor, get_cursors
 
-# import shelve
+# set the global variables
+# here is an example
 
 project_path = '/hci/xxx/android-7.0.0_r33/'
 clang_prepath = 'prebuilts/clang/host/linux-x86/clang-2690385/'
