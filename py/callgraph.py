@@ -7,7 +7,6 @@ import os.path
 from clang.cindex import Config
 import ccsyspath
 import numpy as np
-# from helper_local import get_file, find_c_or_cpp, find_files, find_command, find_command_star_node, get_cpp_files_path
 from helper import get_file, find_c_or_cpp, find_files, find_command, find_command_star_node, get_cpp_files_path, \
     find_command_all_cpp
 import re
