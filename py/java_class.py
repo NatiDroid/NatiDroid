@@ -231,7 +231,7 @@ def load():
         print(obj['file_path'])
         print(last)
         print(base)
-        cmd = 'java -jar /Users/chaoranli/IdeaProjects/aosp_java_analyser/out/artifacts/findCppLink/findCppLink.jar "%s" "%s" > %s' % (last, base, "log/"+base+last+'.txt')
+        cmd = 'java -jar /Users/xxx/IdeaProjects/aosp_java_analyser/out/artifacts/findCppLink/findCppLink.jar "%s" "%s" > %s' % (last, base, "log/"+base+last+'.txt')
         print(cmd)
         os.system(cmd)
 

@@ -3598,9 +3598,9 @@ class Config:
 
     def get_cindex_library(self):
         try:
-            # chaoran modified
+            # modified
             # library = cdll.LoadLibrary(self.get_filename())
-            library = cdll.LoadLibrary('/hci/chaoran_data/android-7.0.0_r33/out/host/linux-x86/lib64/libclang.so')
+            library = cdll.LoadLibrary('/hci/xxx/android-7.0.0_r33/out/host/linux-x86/lib64/libclang.so')
         except OSError as e:
             msg = str(e) + ". To provide a path to libclang use " \
                            "Config.set_library_path() or " \

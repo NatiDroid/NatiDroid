@@ -17,13 +17,13 @@ from util import get_tu, get_cursor, get_cursors
 
 # import shelve
 
-project_path = '/hci/chaoran_data/android-7.0.0_r33/'
+project_path = '/hci/xxx/android-7.0.0_r33/'
 clang_prepath = 'prebuilts/clang/host/linux-x86/clang-2690385/'
 clang_lib_path = project_path + clang_prepath + 'lib64/libc++.so'
-clang_lib_path = '/hci/chaoran_data/android-7.0.0_r33/out/host/linux-x86/lib64/libclang.so'
+clang_lib_path = '/hci/xxx/android-7.0.0_r33/out/host/linux-x86/lib64/libclang.so'
 print(clang_lib_path)
 Config.set_library_file(clang_lib_path)
-init_arg_config = '-isystem/hci/chaoran_data/android-7.0.0_r33/prebuilts/clang/host/linux-x86/clang-2690385/lib64/clang/3.8/include'
+init_arg_config = '-isystem/hci/xxx/android-7.0.0_r33/prebuilts/clang/host/linux-x86/clang-2690385/lib64/clang/3.8/include'
 aosp_ver = '7.0'
 h_list = None
 
@@ -1872,7 +1872,7 @@ class file_analyser():
     def load_cfg_normal(self, index, file, args):
 
         syspath = ccsyspath.system_include_paths(
-            '/hci/chaoran_data/android-7.0.0_r33/prebuilts/clang/host/linux-x86/clang-2690385/bin/clang++')
+            '/hci/cxxx/android-7.0.0_r33/prebuilts/clang/host/linux-x86/clang-2690385/bin/clang++')
         sysincargs = ['-I' + str(inc, encoding="utf8") for inc in syspath]
         args = args + sysincargs
 
@@ -2211,10 +2211,10 @@ class file_analyser():
                 if not os.path.exists('tem/html/' + file_str.replace('/', '_') + '/'):
                     os.makedirs('tem/html/' + file_str.replace('/', '_') + '/')
                 with open(path2save, 'w') as file_obj:
-                    print('output:', 'file:///Users/chaoranli/PycharmProjects/test/' + path2save)
+                    print('output:', 'file:///Users/xxx/PycharmProjects/test/' + path2save)
                     file_obj.writelines(html)
                     import webbrowser
-                    webbrowser.open('file:///Users/chaoranli/PycharmProjects/test/' + path2save)
+                    webbrowser.open('file:///Users/xxx/PycharmProjects/test/' + path2save)
             tu.save('tem/test_unit')
 
             print('===========Total permission=============')
