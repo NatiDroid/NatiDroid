@@ -1491,7 +1491,7 @@ class file_analyser():
 
         return h_no_I
 
-    def extract_onTransact(self, node, identifier, conditions, depth=0, case_mode=False, case_level=10e10):
+    def extract_onTransact(self, node, identifier, conditions, depth=0, case_mode=False, case_level=10e10, clearId=False):
         if node is not None and node.location.file is not None and self.pro_path in node.location.file.name:
             for n in node.get_children():
                 print('1818| %2d' % depth + ' ' * depth, n.kind, n.spelling, end=' | ')
@@ -1516,13 +1516,13 @@ class file_analyser():
                     print('.line 1831 find case \'s conditions')
                     self.print_childrens(node, conditions, depth + 2)
                     so_far = []
-                    self.print_calls(self.fully_qualified_pretty(node), so_far, node, conditions, depth=depth + 1)
+                    self.print_calls(self.fully_qualified_pretty(node), so_far, node, conditions, depth=depth + 1, clearId=clearId)
 
                 if n is not None:
                     self.extract_onTransact(n, identifier, conditions, case_mode=case_mode, case_level=case_level,
                                             depth=depth + 1)
 
-    def onTransact(self, identifier, onTransact_class):
+    def onTransact(self, identifier, onTransact_class, clearId=False):
         print(identifier)
         print(onTransact_class)
         k_list, v_list = self.search_fun_list_full(onTransact_class + '::onTransact(')
@@ -1539,7 +1539,7 @@ class file_analyser():
             conditions = []
 
             so_far = []
-            self.print_calls(self.fully_qualified_pretty(node), so_far, node, conditions, depth=0)
+            self.print_calls(self.fully_qualified_pretty(node), so_far, node, conditions, depth=0, clearId=clearId)
             print('conditions', conditions)
             conditions_new = []
             print(identifier + '*')
@@ -1553,7 +1553,7 @@ class file_analyser():
 
             return conditions_new
 
-    def print_calls(self, fun_name, so_far, last_node, permission_strs, depth=0):
+    def print_calls(self, fun_name, so_far, last_node, permission_strs, depth=0, clearId=False):
         if fun_name in self.CALLGRAPH:
             for f in self.CALLGRAPH[fun_name]:
                 node = f
@@ -1583,7 +1583,8 @@ class file_analyser():
 
                             str_con = self._replace_condition_fun(str_con, speci_conds)
                         print('|||[%s]' % str_con)
-                        permission_strs.append(str_con)
+                        if not clearId:
+                            permission_strs.append(str_con)
 
                     elif 'addService' in log:
                         print('%2d' % current_depth, ' ' * (depth + 1) + log)
@@ -1603,6 +1604,14 @@ class file_analyser():
                         if self.extract_service_str:
                             self.print_childrens(node, permission_strs, current_depth + 2)
                         print('***')
+                    elif 'clearCallingIdentity' in log:
+                        print('1984 | %2d' % current_depth, ' ' * (depth + 1) + log)
+                        print('***')
+                        clearId = True
+                    elif 'restoreCallingIdentity' in log:
+                        print('1988 | %2d' % current_depth, ' ' * (depth + 1) + log)
+                        print('***')
+                        clearId = False
                     else:
                         if 'instantiate' in log:
                             oo = 0
@@ -1688,7 +1697,7 @@ class file_analyser():
                             so_far.append(v_list[0])
                             print('.line 1233')
                             print('*** 继续正常打印call graph****')
-                            self.print_calls(k_list[0], so_far, v_list[0], permission_strs, depth + 1)
+                            self.print_calls(k_list[0], so_far, v_list[0], permission_strs, depth + 1, clearId=clearId)
                         elif self.not_has_ignore_fun_Ixx(self.fully_qualified_pretty(f)):
                             print('.line 2010')
                             return_class = self.link_binder(last_node, f, so_far)
@@ -1747,16 +1756,16 @@ class file_analyser():
                             print('*** Continue printing normally: call graph****')
                             print(k_list[0], v_list[0].location, '=> ...')
 
-                            self.print_calls(k_list[0], so_far, v_list[0], permission_strs, depth + 1)
+                            self.print_calls(k_list[0], so_far, v_list[0], permission_strs, depth + 1, clearId=clearId)
                         else:
                             print('*** ignore IServiceManager:: method ****', self.fully_qualified_pretty(f))
 
                     elif self.fully_qualified_pretty(f) in self.CALLGRAPH:
                         self.print_calls(self.fully_qualified_pretty(f), so_far, f, permission_strs,
-                                         depth + 1)
+                                         depth + 1, clearId=clearId)
                     else:
                         self.print_calls(self.fully_qualified(f), so_far, f, permission_strs,
-                                         depth + 1)
+                                         depth + 1, clearId=clearId)
 
         else:
             if last_node is not None and last_node not in self.ENDNODE:
